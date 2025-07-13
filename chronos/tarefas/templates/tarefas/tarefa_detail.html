@@ -1,0 +1,83 @@
+{% extends 'content.html'%}
+
+{% block 'content-title'%}
+Tarefa
+{% endblock%}
+
+{% block 'content'%}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"></h3>
+          <div class="card-tools">
+            <div class="btn-group">
+                <a href="{% url 'tarefa-projeto-list' object.projeto.pk %}" class="btn btn-info">Projeto</a>
+                <a href="{% url 'tarefa-update' object.pk %}?projeto_id={{object.projeto.pk}}" class="btn btn-success">Editar</a>
+                <a href="{% url 'tarefa-delete' object.pk %}?projeto_id={{object.projeto.pk}}" class="btn btn-danger">Excluir</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <label for="">Titulo: </label>
+                  <p>
+                  {{object.titulo}}
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <label for="">Projeto: </label>
+                  <p>
+                  {{object.projeto.nome}}
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <label for="">Descrição: </label>
+                  <p>
+                  {{object.descricao | safe}}
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <label for="">Data Entrega: </label>
+                  <p>
+                  {{object.data_entrega |date:"d/m/Y"}} 
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <label for="">Status: </label>
+                  <p>
+                      {% if object.status == enum_status.0.0 %}
+                        <span class="badge bg-primary">{{ enum_status.0.1 }}</span>
+                      {% elif object.status == enum_status.1.0 %}
+                        <span class="badge bg-warning">{{ enum_status.1.1 }}</span>
+                        {% elif object.status == enum_status.2.0 %}
+                        <span class="badge bg-success">{{ enum_status.2.1 }}</span>
+                      {% endif %}
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <ul class="list-group">
+              {% for checklist in object.checklists.all %}
+                <li class="list-group-item">
+                  {% if checklist.concluido %}
+                    <s>{{ checklist.descricao }}</s>
+                  {% else %}
+                    {{ checklist.descricao }}
+                  {% endif %}
+                </li>
+              {% endfor %} 
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

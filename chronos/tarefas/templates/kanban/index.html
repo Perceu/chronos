@@ -1,0 +1,58 @@
+{% extends 'content.html'%}
+
+{% block 'content-title'%}
+Atividades de Projetos Ativos
+{% endblock%}
+{% block 'warpper-class' %}kanban{% endblock %}
+{% block 'content'%}
+<div class="container-fluid h-100">
+    <div class="card card-row card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                A Realizar/Aberta
+            </h3>
+        </div>
+        <div class="card-body">
+            {% for task in tarefas_abertas %}
+                {% include 'kanban/task_card.html' with task=task %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card card-row card-warning">
+        <div class="card-header">
+            <h3 class="card-title">
+                Andamento
+            </h3>
+        </div>
+        <div class="card-body">
+            {% for task in tarefas_em_andamento %}
+                {% include 'kanban/task_card.html' with task=task %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card card-row card-default">
+        <div class="card-header bg-default">
+            <h3 class="card-title">
+                Bloqueada/Esperando
+            </h3>
+        </div>
+        <div class="card-body">
+            {% for task in tarefas_bloqueadas %}
+                {% include 'kanban/task_card.html' with task=task %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card card-row card-default">
+        <div class="card-header bg-success">
+            <h3 class="card-title">
+                Concluida
+            </h3>
+        </div>
+        <div class="card-body">
+            {% for task in tarefas_concluidas %}
+                {% include 'kanban/task_card.html' with task=task %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

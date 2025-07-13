@@ -1,0 +1,43 @@
+<div class="card card-light card-outline">
+    <div class="card-header">
+        <a href="{{task.get_absolute_url}}" class="link">
+            <h5 class="card-title">
+                {{task}}({{task.tempo_decorrido}})
+            </h5>
+        </a>
+        <div class="card-tools">
+            <a href="{{task.projeto.get_absolute_url}}" class="btn btn-tool btn-link">#{{task.projeto.id}}</a>
+            <a href="{% url 'tarefa-update' task.id%}?projeto_id={{task.projeto.pk}}&redirect=tarefa-kanban" class="btn btn-tool">
+                <i class="fas fa-pen"></i>
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <span class="badge badge-light">
+            {{task.projeto}}
+        </span>
+        <span class="badge badge-primary">{{task.data_entrega|date:"d/m/Y"}}</span>
+        <p>
+            {{task.descricao| safe}}
+        </p>
+    </div>
+    <div class="card-footer">
+        {% if task.tempos.last.inicio %}
+            {% if not task.tempos.last.fim %}
+                <a href="{% url 'tarefa-pause' task.pk %}?redirect=tarefa-kanban" class="btn btn-xs btn-outline-warning">
+                    <i class="fas fa-pause"></i> Pausar
+                </a>
+            {% else %}
+                <a href="{% url 'tarefa-start' task.pk %}?redirect=tarefa-kanban" class="btn btn-xs btn-outline-primary">
+                    <i class="fas fa-play"></i> Iniciar
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'tarefa-start' task.pk %}?redirect=tarefa-kanban" class="btn btn-xs btn-outline-primary">
+                <i class="fas fa-play"></i> Iniciar
+            </a>
+        {% endif %}
+        <span class="badge text-bg-secondary">{{task.checklist_concluidas}} / {{task.checklists.count}}</span>
+        
+    </div>
+</div>

@@ -1,0 +1,94 @@
+{% extends 'content.html'%}
+
+{% block 'content-title'%}
+Tarefas do Projeto: {{projeto.nome}} 
+<a href="{% url 'projeto-update' projeto.pk %}?redirect=tarefa-projeto-list" class="btn btn-tool">
+    <i class="fas fa-pen"></i>
+</a>
+{% endblock%}
+
+{% block 'content'%}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <label for="">Projeto:</label> {{projeto.nome}}
+                    <br>
+                    <label for="">Cliente:</label> <a href="{{projeto.cliente.get_absolute_url}}">{{projeto.cliente}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"></h3>
+                    <div class="card-tools">
+                        <a href="{% url 'tarefa-add' %}?projeto_id={{projeto.pk}}" class="btn btn-block btn-info">Adicionar Tarefa</a>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tarefa</th>
+                                <th>Entrega</th>
+                                <th class="text-right">Tempo Decorrido</th>
+                                <th>Status</th>
+                                <th class="text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in tarefas %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'tarefa-detail' object.pk %}" class="link">
+                                        {{ object }}
+                                    </a>
+                                </td>
+                                <td>{{ object.data_entrega|date:"d/m/Y"}}</td>
+                                <td class="text-right">{{ object.tempo_decorrido }}</td>
+                                <td>
+                                    {% for key, val in enum_status %}
+                                        {% if object.status == key %}
+                                            <span>{{ val }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td class="text-right">
+                                    <div class="btn-group">
+                                        {% if object.tempos.last.inicio %}
+                                            {% if not object.tempos.last.fim %}
+                                                <a href="{% url 'tarefa-pause' object.pk %}" class="btn btn-warning">
+                                                    <i class="fas fa-pause"></i>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'tarefa-start' object.pk %}" class="btn btn-primary">
+                                                    <i class="fas fa-play"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a href="{% url 'tarefa-start' object.pk %}" class="btn btn-primary">
+                                                <i class="fas fa-play"></i>
+                                            </a>
+                                        {% endif %}
+
+                                        <a href="{% url 'tarefa-update' object.pk %}?projeto_id={{projeto.pk}}" class="btn btn-success">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'tarefa-delete' object.pk %}?projeto_id={{projeto.pk}}" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

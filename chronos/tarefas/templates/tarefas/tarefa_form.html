@@ -1,0 +1,66 @@
+{% extends 'content.html'%}
+{% load crispy_forms_tags static %}
+
+{% block 'content-title'%}
+Edição da Tarefa
+{% endblock%}
+
+{% block 'content'%}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                <div class="card-header">
+                    <h3 class="card-title">Editando Tarefa</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{form|crispy}}
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table">
+                                {{ checklist_form.management_form }}
+
+                                {% for form in checklist_form.forms %}
+                                {% if forloop.first %}
+                                <thead>
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                        <th>{{ field.label|capfirst }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                {% endif %}
+                                <tr class="formset_row">
+                                    {% for field in form.visible_fields %}
+                                    <td>
+                                        {# Include the hidden fields in the form #}
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {{ field.errors.as_ul }}
+                                        {{ field }}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-info">Salvar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

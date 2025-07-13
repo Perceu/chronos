@@ -1,0 +1,12 @@
+.content-wrapper.kanban .content .container,
+.content-wrapper.kanban .content .container-fluid,
+.content-wrapper.kanban .content .container-lg,
+.content-wrapper.kanban .content .container-md,
+.content-wrapper.kanban .content .container-sm,
+.content-wrapper.kanban .content .container-xl {
+    align-items: start;
+}
+
+.content-wrapper.kanban .content {
+    overflow-y: auto
+}

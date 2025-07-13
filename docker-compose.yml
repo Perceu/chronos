@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres
+    env_file: .env
+    environment:
+        POSTGRES_USER: chronos
+        POSTGRES_DB: chronos
+    networks:
+      - funworks_net
+    ports:
+      - 5432:5432
+    volumes: 
+        - pgdata:/var/lib/postgresql/data
+
+  django:
+    build: 
+      dockerfile: python.dockerfile
+    working_dir: /var/www/django
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - .env
+    networks:
+      - funworks_net
+    ports:
+      - 8000:8000
+      - 8080:80
+    volumes:
+      - ./chronos:/var/www/django/chronos
+      - ./manage.py:/var/www/django/manage.py
+
+volumes:
+  pgdata:
+
+
+networks:
+  funworks_net:

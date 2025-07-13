@@ -1,0 +1,30 @@
+{% extends 'content.html'%}
+
+{% block 'content-title'%}
+Lista de Clientes
+{% endblock%}
+
+{% block 'content'%}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-header">
+                        <h3 class="card-title">Excluir Cliente</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        Deseja mesmo excluir todos os dados do cliente: {{object}} ??
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <a href="{% url 'cliente-list' %}" class="btn btn-info">Não</a>
+                        <button type="submit" class="btn btn-info">Sim</a>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+{% endblock %}

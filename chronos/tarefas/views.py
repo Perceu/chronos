@@ -1,0 +1,221 @@
+from datetime import datetime
+import logging
+import json
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+    TemplateView,
+)
+from chronos.tarefas.models import Tarefa, TarefaTempo
+from chronos.projetos.models import Projeto
+from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm
+
+
+# Create your views here.
+def tarefas_projeto(request, projeto_id):
+    projeto = Projeto.objects.filter(pk=projeto_id).get()
+    tarefas = Tarefa.objects.filter(projeto__pk=projeto_id).all()
+
+    return render(
+        request,
+        "projeto/tarefas_projeto.html",
+        {
+            "tarefas": tarefas,
+            "projeto": projeto,
+            "enum_status": Tarefa.StatusTarefa.choices,
+        },
+    )
+
+
+def tarefas_start(request, tarefa_id):
+    tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
+    tarefa_tempo = TarefaTempo(
+        tarefa=tarefa,
+        inicio=datetime.now(),
+    )
+    tarefa_tempo.save()
+    url = request.GET.get("redirect", "tarefa-projeto-list")
+    if url == "tarefa-kanban":
+        return redirect(url)
+    return redirect(url, projeto_id=tarefa.projeto.pk)
+
+
+def tarefas_pause(request, tarefa_id):
+    tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
+    last_time = tarefa.tempos.last()
+    last_time.fim = datetime.now()
+    last_time.save()
+    url = request.GET.get("redirect", "tarefa-projeto-list")
+    if url == "tarefa-kanban":
+        return redirect(url)
+    return redirect(url, projeto_id=tarefa.projeto.pk)
+
+
+class TarefasListView(ListView):
+    model = Tarefa
+
+
+class TarefasCreateView(CreateView):
+    model = Tarefa
+    form_class = TarefaModelForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        projeto_id = self.request.GET.get("projeto_id")
+        projeto_default = Projeto.objects.get(pk=projeto_id)
+        initial["projeto"] = projeto_default
+        return initial
+
+    def get_success_url(self):
+        self.logger = logging.getLogger(__name__)
+        context = self.get_context_data()
+        projeto = context["form"].data.get("projeto")
+        return reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context["checklist_form"] = TarefaChecklistForm(
+                self.request.POST, instance=self.object
+            )
+        else:
+            context["checklist_form"] = TarefaChecklistForm(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        checklist_form = context["checklist_form"]
+        if checklist_form.is_valid():
+            self.object = form.save()  # Save the parent object first
+            checklist_form.instance = (
+                self.object
+            )  # Link the formset to the saved parent
+            checklist_form.save()
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+class TarefasUpdateView(UpdateView):
+    model = Tarefa
+    form_class = TarefaModelForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        projeto_id = self.request.GET.get("projeto_id")
+        projeto_default = Projeto.objects.get(pk=projeto_id)
+        initial["projeto"] = projeto_default
+        return initial
+
+    def get_success_url(self):
+        self.logger = logging.getLogger(__name__)
+        context = self.get_context_data()
+        projeto = context["form"].data.get("projeto")
+        url = self.request.GET.get("redirect", "tarefa-projeto-list")
+        if url == "tarefa-kanban":
+            return reverse(url)
+        return reverse(url, kwargs={"projeto_id": projeto})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context["checklist_form"] = TarefaChecklistForm(
+                self.request.POST, instance=self.object
+            )
+        else:
+            context["checklist_form"] = TarefaChecklistForm(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        checklist_form = context["checklist_form"]
+        if checklist_form.is_valid():
+            self.object = form.save()  # Save the parent object first
+            checklist_form.instance = (
+                self.object
+            )  # Link the formset to the saved parent
+            checklist_form.save()
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+class TarefasDeleteView(DeleteView):
+    model = Tarefa
+    success_url = reverse_lazy("tarefa-list")
+
+    def get_success_url(self):
+        self.logger = logging.getLogger(__name__)
+        projeto_id = self.request.GET.get("projeto_id")
+
+        return reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto_id})
+
+
+class TarefasDetailView(DetailView):
+    model = Tarefa
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["enum_status"] = Tarefa.StatusTarefa.choices
+        return context
+
+
+class KanbanTarefasView(TemplateView):
+    template_name = "kanban/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tarefas_abertas = Tarefa.objects.filter(
+            status=Tarefa.StatusTarefa.ABERTA.value
+        ).all()
+        tarefas_em_andamento = Tarefa.objects.filter(
+            status=Tarefa.StatusTarefa.ANDAMENTO.value
+        ).all()
+        tarefas_bloqueadas = Tarefa.objects.filter(
+            status=Tarefa.StatusTarefa.BLOQUEADA.value
+        ).all()
+        tarefas_concluidas = Tarefa.objects.filter(
+            status=Tarefa.StatusTarefa.CONCLUIDA.value
+        ).all()
+        context["tarefas_abertas"] = tarefas_abertas
+        context["tarefas_em_andamento"] = tarefas_em_andamento
+        context["tarefas_bloqueadas"] = tarefas_bloqueadas
+        context["tarefas_concluidas"] = tarefas_concluidas
+        return context
+
+
+class CalendarTarefasView(TemplateView):
+    template_name = "calendar/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tarefas = Tarefa.objects.exclude(
+            status=Tarefa.StatusTarefa.CONCLUIDA.value
+        ).all()
+        context["tarefas"] = tarefas
+        eventos = []
+        for tarefa in tarefas:
+            if not tarefa.data_entrega:
+                continue
+            color = '#555555'
+            if tarefa.status == Tarefa.StatusTarefa.ABERTA.value:
+                color = '#007bff'
+            elif tarefa.status == Tarefa.StatusTarefa.ANDAMENTO.value:
+                color = '#ffc107'
+
+            eventos.append(
+                {
+                    "title": tarefa.titulo,
+                    "start": tarefa.data_entrega.strftime('%Y-%m-%d'),
+                    "backgroundColor": color,
+                    "borderColor": color,
+                    "allDay": "true",
+                }
+            )
+        context["eventos"] = json.dumps(eventos)
+        return context

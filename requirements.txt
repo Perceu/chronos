@@ -1,0 +1,8 @@
+dj-database-url
+django
+django-crispy-forms
+crispy-bootstrap4
+python-decouple
+gunicorn 
+psycopg2-binary
+ipython
