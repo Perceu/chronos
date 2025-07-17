@@ -11,12 +11,18 @@ from django.views.generic import (
     DetailView,
     TemplateView,
 )
-from chronos.tarefas.models import Tarefa, TarefaTempo
+from chronos.tarefas.models import Tarefa, TarefaTempo, TarefaChecklist
 from chronos.projetos.models import Projeto
 from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm
 
 
 # Create your views here.
+def check_uncheck_checklist(request, checklist_id):
+    projeto = TarefaChecklist.objects.filter(pk=checklist_id).get()
+    projeto.concluido = not projeto.concluido
+    projeto.save()
+    return redirect('tarefa-detail', pk=projeto.tarefa.pk)
+
 def tarefas_projeto(request, projeto_id):
     projeto = Projeto.objects.filter(pk=projeto_id).get()
     tarefas = Tarefa.objects.filter(projeto__pk=projeto_id).all()

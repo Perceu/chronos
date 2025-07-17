@@ -6,6 +6,7 @@ urlpatterns = [
     path('projeto/<int:projeto_id>', views.tarefas_projeto, name="tarefa-projeto-list"),
     path('play/<int:tarefa_id>', views.tarefas_start, name="tarefa-start"),
     path('pause/<int:tarefa_id>', views.tarefas_pause, name="tarefa-pause"),
+    path('checklist/<int:checklist_id>', views.check_uncheck_checklist, name="checklist-check"),
 
     path('', views.TarefasListView.as_view(), name="tarefa-list"),
     path('criar', views.TarefasCreateView.as_view(), name="tarefa-add"),

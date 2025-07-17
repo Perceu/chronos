@@ -18,6 +18,7 @@ class TarefaModelForm(forms.ModelForm):
             'data_entrega': forms.DateInput(attrs={
                 'data-inputmask': "'mask': '99/99/9999'",
                 'placeholder':'dd/mm/yyyy',
+                'type':'date',
             }),
             'descricao': forms.Textarea(attrs={
                 'class': "summernote",
