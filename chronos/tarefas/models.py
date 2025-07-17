@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from chronos.projetos.models import Projeto
-from chronos.checklists.models import Checklist, ChecklistItem
 
 class Tarefa(models.Model):
 
@@ -53,9 +52,8 @@ class TarefaChecklist(models.Model):
     descricao = models.CharField(max_length=255, blank=True, null=True, default='')
     concluido = models.BooleanField(default=False)
 
-    @property
     def __str__(self):
-        return self.descricao
+        return str(self.descricao)
     
     def get_absolute_url(self):
         return reverse('tarefa-detail', kwargs={"pk": self.tarefa.pk})
@@ -68,7 +66,6 @@ class TarefaTempo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     descricao = models.CharField(max_length=200, null=True, blank=True, default='')
 
-    @property
     def __str__(self):
         return f"{self.inicio} - {self.fim}"
 

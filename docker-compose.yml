@@ -6,7 +6,7 @@ services:
         POSTGRES_USER: chronos
         POSTGRES_DB: chronos
     networks:
-      - funworks_net
+      - chronos_net
     ports:
       - 5432:5432
     volumes: 
@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     networks:
-      - funworks_net
+      - chronos_net
     ports:
       - 8000:8000
       - 8080:80
@@ -33,4 +33,4 @@ volumes:
 
 
 networks:
-  funworks_net:
+  chronos_net:

@@ -8,6 +8,7 @@ class TarefaTempoInline(admin.TabularInline):
 
 class TarefaChecklistInline(admin.TabularInline):
     model = TarefaChecklist
+    extra = 1
 
 class TarefaAdmin(admin.ModelAdmin):
     list_display = ['projeto', 'titulo']
