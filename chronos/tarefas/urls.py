@@ -15,4 +15,6 @@ urlpatterns = [
     path('excluir/<int:pk>', views.TarefasDeleteView.as_view(), name="tarefa-delete"),
     path('kanban', views.KanbanTarefasView.as_view(), name="tarefa-kanban"),
     path('calendar', views.CalendarTarefasView.as_view(), name="tarefa-calendar"),
+    path('copiar/<int:tarefa_id>', views.CopiaTarefa.as_view(), name="tarefa-copiar"),
+    path('copiar/save/<int:tarefa_id>', views.copia_tarefa_post, name="tarefa-copiar-save"),
 ]

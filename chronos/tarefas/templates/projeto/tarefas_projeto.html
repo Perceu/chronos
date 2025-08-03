@@ -77,6 +77,9 @@ Tarefas do Projeto: {{projeto.nome}}
                                         <a href="{% url 'tarefa-update' object.pk %}?projeto_id={{projeto.pk}}" class="btn btn-success">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <a href="{% url 'tarefa-copiar' object.pk %}" class="btn btn-dark">
+                                            <i class="fas fa-copy"></i>
+                                        </a>
                                         <a href="{% url 'tarefa-delete' object.pk %}?projeto_id={{projeto.pk}}" class="btn btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </a>

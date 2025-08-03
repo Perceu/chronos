@@ -225,3 +225,32 @@ class CalendarTarefasView(TemplateView):
             )
         context["eventos"] = json.dumps(eventos)
         return context
+
+
+class CopiaTarefa(TemplateView):
+    template_name = "tarefas/tarefa_copy.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tarefa_id = kwargs.get('tarefa_id')
+        context['tarefa_id'] = tarefa_id
+        context['projetos'] = Projeto.objects.all()
+        return context
+
+
+def copia_tarefa_post(request, tarefa_id):
+    tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
+    projeto_id = request.POST.get('projeto_id')
+    projeto = Projeto.objects.filter(pk=projeto_id).get()
+    nova_tarefa = Tarefa()
+    nova_tarefa.descricao = tarefa.descricao
+    nova_tarefa.titulo = tarefa.titulo
+    nova_tarefa.projeto = projeto
+    nova_tarefa.status = Tarefa.StatusTarefa.ABERTA
+    nova_tarefa.save()
+    for checklist in tarefa.checklists.all():
+        novo_checklist = TarefaChecklist()
+        novo_checklist.tarefa = nova_tarefa
+        novo_checklist.descricao = checklist.descricao
+        novo_checklist.save()
+    return redirect(reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto_id}))
