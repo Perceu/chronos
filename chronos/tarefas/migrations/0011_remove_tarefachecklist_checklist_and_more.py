@@ -11,10 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='tarefachecklist',
-            name='checklist',
-        ),
         migrations.AddField(
             model_name='tarefachecklist',
             name='concluido',
@@ -29,13 +25,5 @@ class Migration(migrations.Migration):
             model_name='tarefa',
             name='data_entrega',
             field=models.DateField(blank=True, null=True),
-        ),
-        migrations.AlterField(
-            model_name='tarefachecklist',
-            name='tarefa',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='checklists', to='tarefas.tarefa'),
-        ),
-        migrations.DeleteModel(
-            name='TarefaChecklistItem',
-        ),
+        )
     ]

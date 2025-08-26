@@ -26,17 +26,6 @@ class Migration(migrations.Migration):
             name='TarefaChecklist',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('checklist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checklists.checklist')),
-                ('tarefa', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tarefas.tarefa')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='TarefaChecklistItem',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('concluido', models.BooleanField(default=False)),
-                ('checklist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checklists.checklist')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checklists.checklistitem')),
                 ('tarefa', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tarefas.tarefa')),
             ],
         ),
