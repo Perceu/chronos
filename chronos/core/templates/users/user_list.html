@@ -1,0 +1,72 @@
+{% extends 'content.html'%}
+
+{% block 'content-title'%}
+Lista de Usuarios
+{% endblock%}
+
+{% block 'content'%}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"></h3>
+          <div class="card-tools">
+            <a href="{% url 'user-create' %}" class="btn btn-block btn-info">Adicionar Usuario</a>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th class="text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for object in object_list %}
+              <tr>
+                <td>
+                  {{object}}
+                </td>
+                <td class="text-right">
+                  <div class="btn-group">
+                    <a href="{% url 'user-update' object.pk %}" class="btn btn-success">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    {% if request.user.pk != object.pk %}
+                    <a href="{% url 'user-delete' object.pk %}" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+         <div class="card-footer">
+          {% if is_paginated %}
+            <ul class="pagination pagination-sm float-right">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                    {% endif %}
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                      </a>
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Proxima</a></li>
+                    {% endif %}
+              </ul>
+          {% endif %}
+         </div>
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endblock %}

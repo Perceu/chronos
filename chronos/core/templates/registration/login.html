@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block 'body-class'%}login-page{% endblock %}
+
+{% block 'warpper'%}
+<!-- /.login-logo -->
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="/" class="h1">Chronos</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Faça login para iniciar</p>
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.card -->
+{% endblock %}

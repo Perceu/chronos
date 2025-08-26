@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from datetime import datetime
 import logging
 import json
@@ -17,12 +19,15 @@ from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm
 
 
 # Create your views here.
+@login_required
 def check_uncheck_checklist(request, checklist_id):
     projeto = TarefaChecklist.objects.filter(pk=checklist_id).get()
     projeto.concluido = not projeto.concluido
     projeto.save()
     return redirect('tarefa-detail', pk=projeto.tarefa.pk)
 
+
+@login_required
 def tarefas_projeto(request, projeto_id):
     projeto = Projeto.objects.filter(pk=projeto_id).get()
     tarefas = Tarefa.objects.filter(projeto__pk=projeto_id).all()
@@ -38,6 +43,7 @@ def tarefas_projeto(request, projeto_id):
     )
 
 
+@login_required
 def tarefas_start(request, tarefa_id):
     tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
     tarefa_tempo = TarefaTempo(
@@ -51,6 +57,7 @@ def tarefas_start(request, tarefa_id):
     return redirect(url, projeto_id=tarefa.projeto.pk)
 
 
+@login_required
 def tarefas_pause(request, tarefa_id):
     tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
     last_time = tarefa.tempos.last()
@@ -62,11 +69,11 @@ def tarefas_pause(request, tarefa_id):
     return redirect(url, projeto_id=tarefa.projeto.pk)
 
 
-class TarefasListView(ListView):
+class TarefasListView(LoginRequiredMixin, ListView):
     model = Tarefa
 
 
-class TarefasCreateView(CreateView):
+class TarefasCreateView(LoginRequiredMixin, CreateView):
     model = Tarefa
     form_class = TarefaModelForm
 
@@ -107,7 +114,7 @@ class TarefasCreateView(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class TarefasUpdateView(UpdateView):
+class TarefasUpdateView(LoginRequiredMixin, UpdateView):
     model = Tarefa
     form_class = TarefaModelForm
 
@@ -151,7 +158,7 @@ class TarefasUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class TarefasDeleteView(DeleteView):
+class TarefasDeleteView(LoginRequiredMixin, DeleteView):
     model = Tarefa
     success_url = reverse_lazy("tarefa-list")
 
@@ -162,7 +169,7 @@ class TarefasDeleteView(DeleteView):
         return reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto_id})
 
 
-class TarefasDetailView(DetailView):
+class TarefasDetailView(LoginRequiredMixin, DetailView):
     model = Tarefa
 
     def get_context_data(self, **kwargs):
@@ -171,7 +178,7 @@ class TarefasDetailView(DetailView):
         return context
 
 
-class KanbanTarefasView(TemplateView):
+class KanbanTarefasView(LoginRequiredMixin, TemplateView):
     template_name = "kanban/index.html"
 
     def get_context_data(self, **kwargs):
@@ -195,7 +202,7 @@ class KanbanTarefasView(TemplateView):
         return context
 
 
-class CalendarTarefasView(TemplateView):
+class CalendarTarefasView(LoginRequiredMixin, TemplateView):
     template_name = "calendar/index.html"
 
     def get_context_data(self, **kwargs):
@@ -227,7 +234,7 @@ class CalendarTarefasView(TemplateView):
         return context
 
 
-class CopiaTarefa(TemplateView):
+class CopiaTarefa(LoginRequiredMixin, TemplateView):
     template_name = "tarefas/tarefa_copy.html"
 
     def get_context_data(self, **kwargs):
@@ -238,6 +245,7 @@ class CopiaTarefa(TemplateView):
         return context
 
 
+@login_required
 def copia_tarefa_post(request, tarefa_id):
     tarefa = Tarefa.objects.filter(pk=tarefa_id).get()
     projeto_id = request.POST.get('projeto_id')

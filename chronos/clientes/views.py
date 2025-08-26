@@ -1,23 +1,38 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
+from chronos.clientes.forms import ClienteForm
 from chronos.clientes.models import Cliente
 
-# Create your views here.
-class ClientesListView(ListView):
+
+class ClientesListView(LoginRequiredMixin, ListView):
     model = Cliente
     paginate_by = 10
 
-class ClientesCreateView(CreateView):
-    model = Cliente
-    fields = ["nome", "telefone", "observacoes"]
 
-class ClientesUpdateView(UpdateView):
+class ClientesCreateView(LoginRequiredMixin, CreateView):
     model = Cliente
-    fields = ["nome", "telefone", "observacoes"]
+    form_class = ClienteForm
+    success_url = reverse_lazy("cliente-list")
 
-class ClientesDeleteView(DeleteView):
+
+class ClientesUpdateView(LoginRequiredMixin, UpdateView):
+    model = Cliente
+    form_class = ClienteForm
+    success_url = reverse_lazy("cliente-list")
+
+
+class ClientesDeleteView(LoginRequiredMixin, DeleteView):
     model = Cliente
     success_url = reverse_lazy("cliente-list")
 
-class ClientesDetailView(DetailView):
+
+class ClientesDetailView(LoginRequiredMixin, DetailView):
     model = Cliente

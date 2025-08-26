@@ -1,5 +1,8 @@
 $(document).ready(function () {
     $(":input").inputmask();
+
+    $(".maskmoney").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+
     $(".summernote").summernote({
         toolbar: [
             ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -9,11 +12,13 @@ $(document).ready(function () {
         ],
         height: 150
     });
+
     $('.formset_row').formset({
         addText: 'Novo Checklist',
         deleteText: 'Excluir',
         prefix: 'checklists'
     });
+
     var eventos = document.getElementById('eventos').value;
     var events_data = JSON.parse(eventos);
     var Calendar = FullCalendar.Calendar;

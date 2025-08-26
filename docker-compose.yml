@@ -22,7 +22,7 @@ services:
     networks:
       - chronos_net
     ports:
-      - 8000:8000
+      - 8001:8000
       - 8080:80
     volumes:
       - ./chronos:/var/www/django/chronos

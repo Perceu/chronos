@@ -10,6 +10,31 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
   </ul>
+  <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+          <i class="far fa-user"></i>
+          {{ request.user }}          
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+          <span class="dropdown-item dropdown-header">Perfil</span>
+          <div class="dropdown-divider"></div>
+          <a href="/admin" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> Administração
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'user-list' %}" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> Usuarios
+          </a>
+          <div class="dropdown-divider"></div>
+          <form action="/logout" method="post">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item dropdown-footer">Sair</button>
+          </form>
+        </div>
+      </li>
+    </ul>
 </nav>
 <!-- /.navbar -->
 
