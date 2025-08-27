@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 import logging
 import json
+from django import forms
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import (
@@ -80,9 +81,18 @@ class TarefasCreateView(LoginRequiredMixin, CreateView):
     def get_initial(self):
         initial = super().get_initial()
         projeto_id = self.request.GET.get("projeto_id")
-        projeto_default = Projeto.objects.get(pk=projeto_id)
-        initial["projeto"] = projeto_default
+        if projeto_id:
+            projeto_default = Projeto.objects.get(pk=projeto_id)
+            initial["projeto"] = projeto_default
         return initial
+
+    def get_form(self):
+        form = super().get_form()
+        logger = logging.getLogger(__name__)
+        if form.initial.get('projeto'):
+            logger.warning('projeto veio por parametro')
+            form.fields['projeto'].widget = forms.widgets.HiddenInput()
+        return form
 
     def get_success_url(self):
         self.logger = logging.getLogger(__name__)
@@ -121,10 +131,19 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
     def get_initial(self):
         initial = super().get_initial()
         projeto_id = self.request.GET.get("projeto_id")
-        projeto_default = Projeto.objects.get(pk=projeto_id)
-        initial["projeto"] = projeto_default
+        if projeto_id:
+            projeto_default = Projeto.objects.get(pk=projeto_id)
+            initial["projeto"] = projeto_default
         return initial
-
+    
+    def get_form(self):
+        form = super().get_form()
+        logger = logging.getLogger(__name__)
+        if form.initial.get('projeto'):
+            logger.warning('projeto veio por parametro')
+            form.fields['projeto'].widget = forms.widgets.HiddenInput()
+        return form
+    
     def get_success_url(self):
         self.logger = logging.getLogger(__name__)
         context = self.get_context_data()

@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block 'body-class'%}login-page{% endblock %}
+
+{% block 'warpper'%}
+<!-- /.login-logo -->
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="/" class="h1">Chronos</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Nos vemos mais tarde</p>
+             <div class="row">
+                <div class="col-12">
+                    <a href="/" class="btn btn-primary btn-block">Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.card -->
+{% endblock %}

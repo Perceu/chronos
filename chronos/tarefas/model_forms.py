@@ -1,3 +1,4 @@
+import logging
 from django import forms
 from chronos.tarefas.models import Tarefa, TarefaChecklist
 from django.forms.models import inlineformset_factory
@@ -14,7 +15,6 @@ class TarefaModelForm(forms.ModelForm):
             "status",
         ]
         widgets = {
-            'projeto': forms.HiddenInput(),
             'data_entrega': forms.DateInput(attrs={
                 'data-inputmask': "'mask': '99/99/9999'",
                 'placeholder':'dd/mm/yyyy',
@@ -24,6 +24,5 @@ class TarefaModelForm(forms.ModelForm):
                 'class': "summernote",
             }),
         }
-
 
 TarefaChecklistForm = inlineformset_factory(Tarefa, TarefaChecklist, fields=['concluido', 'descricao'], extra=1)

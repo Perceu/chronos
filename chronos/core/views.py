@@ -23,6 +23,7 @@ class ChronosLoginView(LoginView):
 
 
 class ChronosLogoutView(LogoutView):
+    template_name="registration/my_logged_out.html"
     pass
 
 
