@@ -16,7 +16,7 @@ from django.views.generic import (
 )
 from chronos.tarefas.models import Tarefa, TarefaTempo, TarefaChecklist
 from chronos.projetos.models import Projeto
-from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm
+from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm, TarefaTempoForm
 
 
 # Create your views here.
@@ -106,19 +106,28 @@ class TarefasCreateView(LoginRequiredMixin, CreateView):
             context["checklist_form"] = TarefaChecklistForm(
                 self.request.POST, instance=self.object
             )
+            context["tempo_form"] = TarefaTempoForm(
+                self.request.POST, instance=self.object
+            )
         else:
             context["checklist_form"] = TarefaChecklistForm(instance=self.object)
+            context["tempo_form"] = TarefaTempoForm(instance=self.object)
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         checklist_form = context["checklist_form"]
-        if checklist_form.is_valid():
+        tempo_form = context["tempo_form"]
+        if checklist_form.is_valid() and tempo_form.is_valid():
             self.object = form.save()  # Save the parent object first
             checklist_form.instance = (
                 self.object
-            )  # Link the formset to the saved parent
+            )
+            tempo_form.instance = (
+                self.object
+            )
             checklist_form.save()
+            tempo_form.save()
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -135,7 +144,7 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
             projeto_default = Projeto.objects.get(pk=projeto_id)
             initial["projeto"] = projeto_default
         return initial
-    
+
     def get_form(self):
         form = super().get_form()
         logger = logging.getLogger(__name__)
@@ -143,7 +152,7 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
             logger.warning('projeto veio por parametro')
             form.fields['projeto'].widget = forms.widgets.HiddenInput()
         return form
-    
+
     def get_success_url(self):
         self.logger = logging.getLogger(__name__)
         context = self.get_context_data()
@@ -159,19 +168,28 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
             context["checklist_form"] = TarefaChecklistForm(
                 self.request.POST, instance=self.object
             )
+            context["tempo_form"] = TarefaTempoForm(
+                self.request.POST, instance=self.object
+            )
         else:
             context["checklist_form"] = TarefaChecklistForm(instance=self.object)
+            context["tempo_form"] = TarefaTempoForm(instance=self.object)
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         checklist_form = context["checklist_form"]
-        if checklist_form.is_valid():
+        tempo_form = context["tempo_form"]
+        if checklist_form.is_valid() and tempo_form.is_valid():
             self.object = form.save()  # Save the parent object first
             checklist_form.instance = (
                 self.object
-            )  # Link the formset to the saved parent
+            )
+            tempo_form.instance = (
+                self.object
+            )
             checklist_form.save()
+            tempo_form.save()
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))

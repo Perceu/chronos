@@ -2,7 +2,12 @@
 {% load crispy_forms_tags static %}
 
 {% block 'content-title'%}
-Edição da Tarefa
+{% if object.pk %}
+Edição da Tarefa <small>#{{object.pk}}</small>
+{% else %}
+Nova Tarefa
+{% endif %}
+
 {% endblock%}
 
 {% block 'content'%}
@@ -12,45 +17,88 @@ Edição da Tarefa
             <form method="post">
                 {% csrf_token %}
                 <div class="card-header">
-                    <h3 class="card-title">Editando Tarefa</h3>
+                    <h3 class="card-title">Tarefa</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{form|crispy}}
+                    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Tarefa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Tempos</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="custom-content-below-tabContent">
+                        <div class="tab-pane fade active show" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{form|crispy}}
+                                </div>
+                                <div class="col-lg-6">
+                                    <table class="table table-sm">
+                                        {{ checklist_form.management_form }}
+        
+                                        {% for form in checklist_form.forms %}
+                                        {% if forloop.first %}
+                                        <thead>
+                                            <tr>
+                                                {% for field in form.visible_fields %}
+                                                <th>{{ field.label|capfirst }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        {% endif %}
+                                        <tr class="formset_row">
+                                            {% for field in form.visible_fields %}
+                                            <td>
+                                                {# Include the hidden fields in the form #}
+                                                {% if forloop.first %}
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+        
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
                             <table class="table table-sm">
-                                {{ checklist_form.management_form }}
 
-                                {% for form in checklist_form.forms %}
-                                {% if forloop.first %}
-                                <thead>
-                                    <tr>
+                                {{ tempo_form.management_form }}
+                                {% for form in tempo_form.forms %}
+                                    {% if forloop.first %}
+                                    <thead>
+                                        <tr>
+                                            {% for field in form.visible_fields %}
+                                            <th>{{ field.label|capfirst }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    {% endif %}
+                                    <tr class="formset_row_2">
                                         {% for field in form.visible_fields %}
-                                        <th>{{ field.label|capfirst }}</th>
+                                        <td>
+                                            {# Include the hidden fields in the form #}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                        </td>
                                         {% endfor %}
                                     </tr>
-                                </thead>
-                                {% endif %}
-                                <tr class="formset_row">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {# Include the hidden fields in the form #}
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
                                 {% endfor %}
                             </table>
-
                         </div>
                     </div>
                 </div>

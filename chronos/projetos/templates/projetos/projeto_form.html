@@ -2,7 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block 'content-title'%}
-Lista de Projeto
+{% if object.pk %}
+Editando Projeto <small>#{{object.pk}}</small>
+{% else %}
+Novo Projeto
+{% endif %}
 {% endblock%}
 
 {% block 'content'%}
@@ -12,7 +16,7 @@ Lista de Projeto
                 <form method="post">
                     {% csrf_token %}
                     <div class="card-header">
-                        <h3 class="card-title">Editando Projeto</h3>
+                        <h3 class="card-title">Projeto</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

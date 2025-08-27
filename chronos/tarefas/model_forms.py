@@ -1,6 +1,6 @@
 import logging
 from django import forms
-from chronos.tarefas.models import Tarefa, TarefaChecklist
+from chronos.tarefas.models import Tarefa, TarefaChecklist, TarefaTempo
 from django.forms.models import inlineformset_factory
 
 
@@ -16,13 +16,15 @@ class TarefaModelForm(forms.ModelForm):
         ]
         widgets = {
             'data_entrega': forms.DateInput(attrs={
-                'data-inputmask': "'mask': '99/99/9999'",
-                'placeholder':'dd/mm/yyyy',
-                'type':'date',
+                'class': 'datepicker',
             }),
             'descricao': forms.Textarea(attrs={
                 'class': "summernote",
             }),
         }
 
+
 TarefaChecklistForm = inlineformset_factory(Tarefa, TarefaChecklist, fields=['concluido', 'descricao'], extra=1)
+
+
+TarefaTempoForm = inlineformset_factory(Tarefa, TarefaTempo, fields=['inicio','fim'], extra=0)

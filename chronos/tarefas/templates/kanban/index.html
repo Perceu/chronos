@@ -1,7 +1,12 @@
 {% extends 'content.html'%}
 
 {% block 'content-title'%}
-Atividades de Projetos Ativos
+<div class="row">
+    <div class="col-12">
+        Quadro de Tarefas 
+        <a href="{% url 'tarefa-add' %}" class="btn btn-default btn-xs">Nova Tarefa</a>
+    </div>
+</div>
 {% endblock%}
 {% block 'warpper-class' %}kanban{% endblock %}
 {% block 'content'%}
