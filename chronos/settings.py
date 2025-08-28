@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "chronos.core.middleware.ActiveMiddleware"
 ]
 
 ROOT_URLCONF = "chronos.urls"
@@ -121,6 +122,8 @@ TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 
 USE_TZ = True
+
+EXPIRATION_DATE = config("EXPIRATION_DATE", default="MjQvMDYvMTk5MQ==")
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
