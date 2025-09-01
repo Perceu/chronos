@@ -38,10 +38,12 @@ $(document).ready(function () {
     });
 
     $('.formset_row').formset({
+        prefix: 'checklists',
         addText: 'Nova linha',
         deleteText: 'Excluir',
     });
     $('.formset_row_2').formset({
+        prefix: 'tempo',
         addText: 'Nova linha',
         deleteText: 'Excluir',
     });
