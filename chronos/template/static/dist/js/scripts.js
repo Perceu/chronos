@@ -25,6 +25,10 @@ $(document).ready(function () {
 
     $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
 
+    $('.datetimepicker').datetimepicker({
+        format:'d/m/Y H:i:s',
+     });
+
     $(".maskmoney").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 
     $(".summernote").summernote({

@@ -42,6 +42,17 @@ class Tarefa(models.Model):
         return str(timedelta(seconds=total_segundos)).split(".")[0]
 
     @property
+    def tempo_decorrido_segundos(self):
+        total_segundos = 0
+        for tempo in self.tempos.all():
+            if not tempo.fim:
+                continue
+            diferenca = tempo.fim - tempo.inicio
+            total_segundos += diferenca.total_seconds()
+
+        return total_segundos
+
+    @property
     def checklist_concluidas(self):
         return self.checklists.filter(concluido=True).count
 

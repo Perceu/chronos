@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-import logging
 import json
+from loguru import logger
 from django import forms
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -35,6 +35,16 @@ def check_uncheck_checklist(request, checklist_id):
 def tarefas_projeto(request, projeto_id):
     projeto = Projeto.objects.filter(pk=projeto_id).get()
     tarefas = Tarefa.objects.filter(projeto__pk=projeto_id).all()
+    total_tempo = 0
+    for tarefa in tarefas:
+        total_tempo += tarefa.tempo_decorrido_segundos
+
+    horas = int(total_tempo/3600)
+
+    media_hora = 0
+    if projeto.valor > 0 and horas > 0:
+        media_hora = float(projeto.valor) / horas
+
 
     return render(
         request,
@@ -42,6 +52,7 @@ def tarefas_projeto(request, projeto_id):
         {
             "tarefas": tarefas,
             "projeto": projeto,
+            "media_hora": media_hora,
             "enum_status": Tarefa.StatusTarefa.choices,
         },
     )
@@ -91,14 +102,12 @@ class TarefasCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self):
         form = super().get_form()
-        logger = logging.getLogger(__name__)
         if form.initial.get('projeto'):
             logger.warning('projeto veio por parametro')
             form.fields['projeto'].widget = forms.widgets.HiddenInput()
         return form
 
     def get_success_url(self):
-        self.logger = logging.getLogger(__name__)
         context = self.get_context_data()
         projeto = context["form"].data.get("projeto")
         return reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto})
@@ -150,14 +159,12 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form(self):
         form = super().get_form()
-        logger = logging.getLogger(__name__)
         if form.initial.get('projeto'):
             logger.warning('projeto veio por parametro')
             form.fields['projeto'].widget = forms.widgets.HiddenInput()
         return form
 
     def get_success_url(self):
-        self.logger = logging.getLogger(__name__)
         context = self.get_context_data()
         projeto = context["form"].data.get("projeto")
         url = self.request.GET.get("redirect", "tarefa-projeto-list")
@@ -203,7 +210,6 @@ class TarefasDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("tarefa-list")
 
     def get_success_url(self):
-        self.logger = logging.getLogger(__name__)
         projeto_id = self.request.GET.get("projeto_id")
 
         return reverse("tarefa-projeto-list", kwargs={"projeto_id": projeto_id})
