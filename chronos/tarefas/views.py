@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -25,7 +26,9 @@ def check_uncheck_checklist(request, checklist_id):
     projeto = TarefaChecklist.objects.filter(pk=checklist_id).get()
     projeto.concluido = not projeto.concluido
     projeto.save()
-    return redirect('tarefa-detail', pk=projeto.tarefa.pk)
+    return JsonResponse({
+        'task_atualizada': True,
+    })
 
 
 @login_required

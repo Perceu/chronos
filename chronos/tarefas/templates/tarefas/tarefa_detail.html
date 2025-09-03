@@ -56,28 +56,30 @@ Tarefa
             </ul>
           </div>
           <div class="col-lg-6">
-            <ul class="list-group">
+            <ul class="todo-list">
               {% for checklist in object.checklists.all %}
-              <li class="list-group-item">
-                {% if checklist.concluido %}
-                <a href="{% url 'checklist-check' checklist.pk %}" class="btn btn-sm btn-default">
-                  <i class="fa fa-check-circle"></i>
-                </a>
-                <s>{{ checklist.descricao }}</s>
-                {% else %}
-                <a href="{% url 'checklist-check' checklist.pk %}" class="btn btn-sm btn-default">
-                  <i class="far fa-circle"></i>
-                </a>
-                {{ checklist.descricao }}
-                {% endif %}
-              </li>
+                <li class="list-group-item">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="{{ checklist.pk }}" {% if checklist.concluido %} checked {% endif %} class="js-click-checklist" name="todo-{{ checklist.pk }}" id="checklist-{{ checklist.pk }}">
+                      <label for="checklist-{{ checklist.pk }}">{{ checklist.descricao }}</label>
+                    </div>
+                </li>
               {% endfor %}
             </ul>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+    $('.js-click-checklist').on('click', function(e) {
+        fetch('/tarefas/checklist/'+$(e.target).val()).then((response) => {
+            console.log(response);
+        })
+    })
+    </script>
 {% endblock %}
