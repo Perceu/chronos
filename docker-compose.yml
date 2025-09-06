@@ -22,8 +22,7 @@ services:
     networks:
       - chronos_net
     ports:
-      - 8001:8000
-      - 8080:80
+      - 8000:8000
     volumes:
       - ./chronos:/var/www/django/chronos
       - ./manage.py:/var/www/django/manage.py

@@ -202,7 +202,7 @@ class TarefasUpdateView(LoginRequiredMixin, UpdateView):
             tempo_form.save()
             return super().form_valid(form)
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form, checklist_form=checklist_form, tempo_form=tempo_form))
 
 
 class TarefasDeleteView(LoginRequiredMixin, DeleteView):

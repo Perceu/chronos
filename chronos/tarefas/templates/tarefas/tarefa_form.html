@@ -64,8 +64,8 @@ Nova Tarefa
                                                     {{ form.descricao | add_class:"form-control"}}
                                                 </td>
                                                 <td>
-                                                    {{ form.delete.errors.as_ul }}
-                                                    {{ form.delete | add_class:"form-control"}}
+                                                    {{ form.DELETE.errors.as_ul }}
+                                                    {{ form.DELETE | add_class:"form-control"}}
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -97,8 +97,8 @@ Nova Tarefa
                                             {{ form.fim | add_class:"form-control datetimepicker"}}
                                         </td>
                                         <td>
-                                            {{ form.excluir.errors.as_ul }}
-                                            {{ form.excluir | add_class:"form-control"}}
+                                            {{ form.DELETE.errors.as_ul }}
+                                            {{ form.DELETE }}
                                         </td>
                                     </tr>
                                 {% endfor %}
