@@ -25,6 +25,4 @@ class TarefaModelForm(forms.ModelForm):
 
 
 TarefaChecklistForm = inlineformset_factory(Tarefa, TarefaChecklist, fields=['concluido', 'descricao'], extra=1)
-
-
 TarefaTempoForm = inlineformset_factory(Tarefa, TarefaTempo, fields=['inicio','fim'], extra=0)

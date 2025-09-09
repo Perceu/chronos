@@ -45,7 +45,6 @@ def tarefas_projeto(request, projeto_id):
     if projeto.valor > 0 and horas > 0:
         media_hora = float(projeto.valor) / horas
 
-
     return render(
         request,
         "projeto/tarefas_projeto.html",

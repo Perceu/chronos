@@ -20,9 +20,11 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
           <span class="dropdown-item dropdown-header">Perfil</span>
           <div class="dropdown-divider"></div>
+          {% if request.user.is_staff %}
           <a href="/admin" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> Administração
           </a>
+          {% endif %}
           <div class="dropdown-divider"></div>
           <a href="{% url 'user-list' %}" class="dropdown-item">
             <i class="fas fa-users mr-2"></i> Usuarios

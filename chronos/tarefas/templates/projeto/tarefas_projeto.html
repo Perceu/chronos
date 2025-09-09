@@ -16,9 +16,11 @@ Tarefas do Projeto: {{projeto.nome}}
                     <br>
                     <label for="">Cliente:</label> <a href="{{projeto.cliente.get_absolute_url}}">{{projeto.cliente}}</a>
                     <br>
-                    <label for="">Media Valor Hora:</label> R$ {{media_hora | floatformat:2}}
-                    <br>
-                    <label for="">Valor Total:</label> R$ {{projeto.valor | floatformat:2}}
+                    {% if 'projetos.can_view_payment_info' in perms %}
+                        <label for="">Media Valor Hora:</label> R$ {{media_hora | floatformat:2}}
+                        <br>
+                        <label for="">Valor Total:</label> R$ {{projeto.valor | floatformat:2}}
+                    {% endif %}
                 </div>
             </div>
         </div>

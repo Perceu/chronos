@@ -6,6 +6,13 @@ from chronos.clientes.models import Cliente
 
 
 class Projeto(models.Model):
+
+    class Meta:
+        ordering = ["pago", "nome"]
+        permissions = [
+            ("can_view_payment_info", "Can view payment information"),
+        ]
+
     class StatusProjeto(models.TextChoices):
         ORCADO = "ORC", _("Orçado")
         CONTRATADO = "CTD", _("Contratado")
@@ -23,9 +30,6 @@ class Projeto(models.Model):
         choices=StatusProjeto,
         default=StatusProjeto.ORCADO,
     )
-
-    class Meta:
-        ordering = ["pago","nome"]
 
     def __str__(self):
         return f"{self.nome} ({self.cliente.nome})"
