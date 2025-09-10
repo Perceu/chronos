@@ -40,7 +40,7 @@ def tarefas_projeto(request, projeto_id):
         total_tempo += tarefa.tempo_decorrido_segundos
 
     horas = int(total_tempo/3600)
-
+    total_horas = total_tempo/3600
     media_hora = 0
     if projeto.valor > 0 and horas > 0:
         media_hora = float(projeto.valor) / horas
@@ -52,6 +52,7 @@ def tarefas_projeto(request, projeto_id):
             "tarefas": tarefas,
             "projeto": projeto,
             "media_hora": media_hora,
+            "total_horas": total_horas,
             "enum_status": Tarefa.StatusTarefa.choices,
         },
     )
