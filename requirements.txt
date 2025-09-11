@@ -1,4 +1,5 @@
 dj-database-url
+dj-static
 django
 django-crispy-forms
 crispy-bootstrap4

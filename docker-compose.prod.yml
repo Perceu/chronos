@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres
+    env_file: .env
+    environment:
+        POSTGRES_USER: chronos
+        POSTGRES_DB: chronos
+    networks:
+      - chronos_net
+    ports:
+      - 5432:5432
+    volumes: 
+        - pgdata:/var/lib/postgresql/data
+
+  django:
+    build: 
+      dockerfile: python.dockerfile
+    working_dir: /var/www/django
+    command: "gunicorn --bind 0.0.0.0:8001 --workers 3 chronos.wsgi:application"
+    env_file:
+      - .env
+    networks:
+      - chronos_net
+    ports:
+      - 8001:8001
+    volumes:
+      - ./chronos:/var/www/django/chronos
+      - ./manage.py:/var/www/django/manage.py
+
+volumes:
+  pgdata:
+
+
+networks:
+  chronos_net:
