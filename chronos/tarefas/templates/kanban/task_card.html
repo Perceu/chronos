@@ -16,7 +16,11 @@
         <span class="badge badge-light">
             {{task.projeto}}
         </span>
+        {% if task.esta_atrasada %}
+        <span class="badge badge-danger">{{task.data_entrega|date:"d/m/Y"}}</span>
+        {% else %}
         <span class="badge badge-primary">{{task.data_entrega|date:"d/m/Y"}}</span>
+        {% endif %}
         <p>
             {{task.descricao| safe}}
         </p>

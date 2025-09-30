@@ -15,6 +15,7 @@ from chronos.projetos.forms import ProjetoForm
 
 class ProjetosListView(LoginRequiredMixin, ListView):
     model = Projeto
+    paginate_by = 10
 
 
 class ProjetosCreateView(LoginRequiredMixin, CreateView):

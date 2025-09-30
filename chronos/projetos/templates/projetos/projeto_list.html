@@ -42,7 +42,9 @@ Lista de Projetos
               </td>
               {% endif %}
               <td>
+                <a href="{{object.cliente.get_absolute_url}}">
                   {{object.cliente}}
+                </a>
               </td>
               <td>
                 <a href="{% url 'tarefa-projeto-list' object.pk %}" class="link">

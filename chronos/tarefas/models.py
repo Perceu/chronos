@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
+from datetime import date
 from chronos.projetos.models import Projeto
 
 
@@ -55,6 +56,12 @@ class Tarefa(models.Model):
     @property
     def checklist_concluidas(self):
         return self.checklists.filter(concluido=True).count
+    
+    @property
+    def esta_atrasada(self):
+        if self.data_entrega:
+            return self.data_entrega < date.today()
+        return False
 
     def get_absolute_url(self):
         return reverse("tarefa-detail", kwargs={"pk": self.pk})
