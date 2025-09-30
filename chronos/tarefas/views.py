@@ -18,6 +18,7 @@ from django.views.generic import (
 from chronos.tarefas.models import Tarefa, TarefaTempo, TarefaChecklist
 from chronos.projetos.models import Projeto
 from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm, TarefaTempoForm
+from chronos.tarefas.filters import ProjetoTarefaFilter
 
 
 # Create your views here.
@@ -227,24 +228,27 @@ class TarefasDetailView(LoginRequiredMixin, DetailView):
 class KanbanTarefasView(LoginRequiredMixin, TemplateView):
     template_name = "kanban/index.html"
 
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        tarefas_abertas = Tarefa.objects.filter(
+        tf = ProjetoTarefaFilter(self.request.GET, queryset=Tarefa.objects.all())
+        tarefas_abertas = tf.qs.filter(
             status=Tarefa.StatusTarefa.ABERTA.value
         ).all()
-        tarefas_em_andamento = Tarefa.objects.filter(
+        tarefas_em_andamento = tf.qs.filter(
             status=Tarefa.StatusTarefa.ANDAMENTO.value
         ).all()
-        tarefas_bloqueadas = Tarefa.objects.filter(
+        tarefas_bloqueadas = tf.qs.filter(
             status=Tarefa.StatusTarefa.BLOQUEADA.value
         ).all()
-        tarefas_concluidas = Tarefa.objects.filter(
+        tarefas_concluidas = tf.qs.filter(
             status=Tarefa.StatusTarefa.CONCLUIDA.value
         ).all()
         context["tarefas_abertas"] = tarefas_abertas
         context["tarefas_em_andamento"] = tarefas_em_andamento
         context["tarefas_bloqueadas"] = tarefas_bloqueadas
         context["tarefas_concluidas"] = tarefas_concluidas
+        context["filter"] = tf
         return context
 
 

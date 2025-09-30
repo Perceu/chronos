@@ -2,9 +2,6 @@ services:
   db:
     image: postgres
     env_file: .env
-    environment:
-        POSTGRES_USER: chronos
-        POSTGRES_DB: chronos
     networks:
       - chronos_net
     ports:
@@ -29,7 +26,6 @@ services:
 
 volumes:
   pgdata:
-
 
 networks:
   chronos_net:

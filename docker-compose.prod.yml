@@ -16,13 +16,13 @@ services:
     build: 
       dockerfile: python.dockerfile
     working_dir: /var/www/django
-    command: "gunicorn --bind 0.0.0.0:8001 --workers 3 chronos.wsgi:application"
+    command: "gunicorn --bind 0.0.0.0:8000 --workers 3 chronos.wsgi:application"
     env_file:
       - .env
     networks:
       - chronos_net
     ports:
-      - 8001:8001
+      - 8000:8000
     volumes:
       - ./chronos:/var/www/django/chronos
       - ./manage.py:/var/www/django/manage.py

@@ -22,7 +22,8 @@ Lista de Projetos
               {% if 'projeto.can_view_payment_info' in perms %}
               <th>Pago</th>
               {% endif %}
-              <th>Nome</th>
+              <th>Cliente</th>
+              <th>Projeto</th>
               <th>Status</th>
               <th>Tarefas</th>
               <th class="text-right">Ações</th>
@@ -41,8 +42,11 @@ Lista de Projetos
               </td>
               {% endif %}
               <td>
+                  {{object.cliente}}
+              </td>
+              <td>
                 <a href="{% url 'tarefa-projeto-list' object.pk %}" class="link">
-                  {{object}}
+                  {{object.nome}}
                 </a>
               </td>
               <td>

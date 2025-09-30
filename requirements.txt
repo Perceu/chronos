@@ -1,6 +1,7 @@
 dj-database-url
 dj-static
 django
+django-filter
 django-crispy-forms
 crispy-bootstrap4
 python-decouple
