@@ -18,6 +18,7 @@ class Projeto(models.Model):
         CONTRATADO = "CTD", _("Contratado")
         ANDAMENTO = "AND", _("Andamento")
         CONCLUIDA = "CON", _("Concluido")
+        BLOQUEADO = "BLO", _("Bloqueado")
 
     nome = models.CharField(max_length=200)
     cliente = models.ForeignKey(

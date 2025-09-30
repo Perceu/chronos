@@ -60,7 +60,9 @@ class Tarefa(models.Model):
     @property
     def esta_atrasada(self):
         if self.data_entrega:
-            return self.data_entrega < date.today()
+            if self.status in [self.StatusTarefa.ABERTA, self.StatusTarefa.ANDAMENTO]:
+                return self.data_entrega < date.today()
+            return False
         return False
 
     def get_absolute_url(self):
