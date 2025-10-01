@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from datetime import date
 from chronos.projetos.models import Projeto
+from django.contrib.auth.models import User
 
 
 class Tarefa(models.Model):
@@ -24,6 +25,7 @@ class Tarefa(models.Model):
         choices=StatusTarefa,
         default=StatusTarefa.ABERTA,
     )
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='tarefas', blank=True, null=True)
 
     def __str__(self):
         return self.titulo
@@ -89,6 +91,7 @@ class TarefaTempo(models.Model):
     fim = models.DateTimeField(blank=True, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     descricao = models.CharField(max_length=200, null=True, blank=True, default="")
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='tempos', blank=True, null=True)
 
     def __str__(self):
         return f"{self.inicio} - {self.fim}"

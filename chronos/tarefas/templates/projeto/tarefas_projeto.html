@@ -44,6 +44,7 @@ Tarefas do Projeto: {{projeto.nome}}
                                 <th>Entrega</th>
                                 <th class="text-right">Tempo Decorrido</th>
                                 <th>Status</th>
+                                <th>Usuario</th>
                                 <th class="text-right">Ações</th>
                             </tr>
                         </thead>
@@ -64,6 +65,7 @@ Tarefas do Projeto: {{projeto.nome}}
                                         {% endif %}
                                     {% endfor %}
                                 </td>
+                                <td>{{object.user}}</td>
                                 <td class="text-right">
                                     <div class="btn-group">
                                         {% if object.tempos.last.inicio %}

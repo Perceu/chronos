@@ -10,6 +10,12 @@ Detalhes do Cliente
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">{{object}}</h3>
+          <br>
+          <fieldset>
+            <section>
+              {{object.observacoes | safe}}
+            </section>
+          </fieldset>
           <div class="card-tools">
             <div class="btn-group">
               <a href="{% url 'cliente-list' %}" class="btn btn-info">Listagem</a>

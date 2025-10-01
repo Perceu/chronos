@@ -42,6 +42,9 @@
             </a>
         {% endif %}
         <span class="badge text-bg-secondary">{{task.checklist_concluidas}} / {{task.checklists.count}}</span>
+        {% if task.user %}
+        <span class="badge text-bg-default">@{{task.user}}</span>
+        {% endif %}
         
     </div>
 </div>

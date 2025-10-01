@@ -8,9 +8,11 @@ from django.views.generic import (
     DeleteView,
     DetailView,
     ListView,
-    UpdateView,
+    UpdateView
 )
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User
+from chronos.core.forms import UserModelForm, UserPasswordModelForm
 
 # Create your views here.
 @login_required
@@ -32,11 +34,21 @@ class UserListView(ListView):
     template_name = 'users/user_list.html'
 
 
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/password_change.html'
+    success_url = reverse_lazy('user-list')
+
+
 class UserCreateView(CreateView):
-    model = User
-    fields = ['username', 'email', 'password']
+    form_class = UserModelForm
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        valid_form = super().form_valid(form)
+        self.object.set_password(form.cleaned_data['password'])
+        self.object.save()
+        return valid_form
 
 
 class UserUpdateView(UpdateView):
@@ -44,6 +56,19 @@ class UserUpdateView(UpdateView):
     fields = ['username', 'email']
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('user-list')
+
+
+class UserPasswordView(UpdateView):
+    model = User
+    form_class = UserPasswordModelForm
+    template_name = 'users/user_form.html'
+    success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        valid_form = super().form_valid(form)
+        self.object.set_password(form.cleaned_data['password'])
+        self.object.save()
+        return valid_form
 
 
 class UserDeleteView(DeleteView):

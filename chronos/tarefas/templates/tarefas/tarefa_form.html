@@ -97,6 +97,10 @@ Nova Tarefa
                                             {{ form.fim | add_class:"form-control datetimepicker"}}
                                         </td>
                                         <td>
+                                            {{ form.user.errors.as_ul }}
+                                            {{ form.user | add_class:"form-control"}}
+                                        </td>
+                                        <td>
                                             {{ form.DELETE.errors.as_ul }}
                                             {{ form.DELETE }}
                                         </td>

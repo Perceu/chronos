@@ -31,6 +31,9 @@ Lista de Usuarios
                 </td>
                 <td class="text-right">
                   <div class="btn-group">
+                    <a href="{% url 'user-password' object.pk %}" class="btn btn-dark">
+                      <i class="fas fa-lock"></i>
+                    </a>
                     <a href="{% url 'user-update' object.pk %}" class="btn btn-success">
                       <i class="fas fa-edit"></i>
                     </a>
