@@ -10,12 +10,23 @@ from django.views.generic import (
     DetailView,
 )
 from chronos.projetos.models import Projeto
+from chronos.projetos.filters import ProjetoFilter
 from chronos.projetos.forms import ProjetoForm
 
 
 class ProjetosListView(LoginRequiredMixin, ListView):
     model = Projeto
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = ProjetoFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class ProjetosCreateView(LoginRequiredMixin, CreateView):
