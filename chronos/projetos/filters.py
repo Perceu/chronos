@@ -5,4 +5,4 @@ from chronos.projetos.models import Projeto
 class ProjetoFilter(django_filters.FilterSet):
     class Meta:
         model = Projeto
-        fields = ['status','pago', 'cliente']
+        fields = ['status','pagamento', 'cliente']

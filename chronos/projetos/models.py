@@ -20,12 +20,24 @@ class Projeto(models.Model):
         CONCLUIDA = "CON", _("Concluido")
         BLOQUEADO = "BLO", _("Bloqueado")
 
+    class StatusPagamento(models.TextChoices):
+        ABERTO = "ABE", _("Aberto")
+        CONCLUIDO = "CON", _("Concluido")
+        PARCELADO = "PAR", _("Parcelado")
+        ATRAZADO = "ATR", _("Atrasado")
+        PERDIDO = "PER", _("Perdido")
+
     nome = models.CharField(max_length=200)
     cliente = models.ForeignKey(
         Cliente, on_delete=models.CASCADE, related_name="projetos"
     )
     valor = models.DecimalField(max_digits=12, decimal_places=2, default=0, null=True)
     pago = models.BooleanField(default=False, null=True)
+    pagamento = models.CharField(
+        max_length=3,
+        choices=StatusPagamento,
+        default=StatusPagamento.ABERTO,
+    )
     status = models.CharField(
         max_length=3,
         choices=StatusProjeto,

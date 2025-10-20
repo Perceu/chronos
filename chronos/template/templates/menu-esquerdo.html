@@ -1,5 +1,6 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
         <li class="nav-item">
             <a href="{% url 'cliente-list' %}" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
@@ -29,6 +30,14 @@
                 <i class="nav-icon fas fa-calendar"></i>
                 <p>
                     Calendario de Tarefas
+                </p>
+            </a>
+        </li>
+        <li class="nav-item border-top">
+            <a href="{% url 'nova-reuniao' %}" class="nav-link">
+                <i class="nav-icon fas fa-calendar-plus"></i>
+                <p>
+                    Nova Reunião
                 </p>
             </a>
         </li>

@@ -43,7 +43,7 @@ Lista de Projetos
           <thead>
             <tr>
               {% if 'projeto.can_view_payment_info' in perms %}
-              <th>Pago</th>
+              <th>Pagamento</th>
               {% endif %}
               <th>Cliente</th>
               <th>Projeto</th>
@@ -57,11 +57,7 @@ Lista de Projetos
             <tr>
               {% if 'projeto.can_view_payment_info' in perms %}
               <td>
-                {% if object.pago %}
-                <i class="fas fa-check text-success"></i>
-                {% else %}
-                <i class="fas fa-times text-danger"></i>
-                {% endif %}
+                {{ object.get_pagamento_display }}
               </td>
               {% endif %}
               <td>

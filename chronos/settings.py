@@ -42,6 +42,7 @@ MY_APPS = [
     "chronos.checklists",
     "chronos.template",
     "chronos.core",
+    "chronos.reunioes",
 ]
 
 INSTALLED_APPS = [

@@ -5,7 +5,7 @@ from chronos.projetos.models import Projeto
 class ProjetoForm(forms.ModelForm):
     class Meta:
         model = Projeto
-        fields = ["nome", "cliente", "valor", "pago", "status"]
+        fields = ["nome", "cliente", "valor", "pagamento", "status"]
         widgets = {
             'valor': forms.TextInput(attrs={
                 'class': "maskmoney",

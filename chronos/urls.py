@@ -23,5 +23,6 @@ urlpatterns = [
     path('clientes/', include('chronos.clientes.urls')),
     path('projetos/', include('chronos.projetos.urls')),
     path('tarefas/', include('chronos.tarefas.urls')),
+    path('reunioes/', include('chronos.reunioes.urls')),
     path('admin/', admin.site.urls),
 ]

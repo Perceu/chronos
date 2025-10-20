@@ -19,6 +19,7 @@ from chronos.tarefas.models import Tarefa, TarefaTempo, TarefaChecklist
 from chronos.projetos.models import Projeto
 from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm, TarefaTempoForm
 from chronos.tarefas.filters import ProjetoTarefaFilter
+from chronos.reunioes.models import Reuniao
 
 
 # Create your views here.
@@ -261,7 +262,9 @@ class CalendarTarefasView(LoginRequiredMixin, TemplateView):
         tarefas = Tarefa.objects.exclude(
             status=Tarefa.StatusTarefa.CONCLUIDA.value
         ).all()
+        reunioes = Reuniao.objects.all()
         context["tarefas"] = tarefas
+        context["reunioes"] = reunioes
         eventos = []
         for tarefa in tarefas:
             if not tarefa.data_entrega:
@@ -279,6 +282,23 @@ class CalendarTarefasView(LoginRequiredMixin, TemplateView):
                     "backgroundColor": color,
                     "borderColor": color,
                     "allDay": "true",
+                }
+            )
+
+        for reuniao in reunioes:
+            if not reuniao.inicio:
+                continue
+            if not reuniao.fim:
+                continue
+            color = 'red'
+
+            eventos.append(
+                {
+                    "title": reuniao.nome,
+                    "start": reuniao.inicio.strftime('%Y-%m-%d %H:%M:%S'),
+                    "end": reuniao.fim.strftime('%Y-%m-%d %H:%M:%S'),
+                    "backgroundColor": color,
+                    "borderColor": color,
                 }
             )
         context["eventos"] = json.dumps(eventos)
