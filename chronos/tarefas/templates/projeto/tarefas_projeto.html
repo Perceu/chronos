@@ -34,7 +34,7 @@ Tarefas do Projeto: {{projeto.nome}}
                     <h3 class="card-title"></h3>
                     <div class="card-tools">
                         <a href="{% url 'tarefa-add' %}?projeto_id={{projeto.pk}}" class="btn btn-info">Adicionar Tarefa</a>
-                        <a href="#" class="btn btn btn-success">Adicionar Reunião</a>
+                        <a href="{% url 'nova-reuniao' %}?projeto_id={{projeto.pk}}" class="btn btn btn-success">Adicionar Reunião</a>
                     </div>
                 </div>
                 <!-- /.card-header -->

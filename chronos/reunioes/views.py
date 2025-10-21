@@ -9,6 +9,13 @@ class NovaReuniao(CreateView):
     form_class = ReuniaoForm
     template_name = 'reunioes/nova_reuniao_form.html'
 
+    def get_initial(self):
+        initial = super(NovaReuniao, self).get_initial()
+        projeto_id = self.request.GET.get('projeto_id')
+        if projeto_id:
+            initial['projeto'] = projeto_id
+        return initial
+
     def get_success_url(self, **kwargs) -> str:
         return reverse_lazy('projetos-reuniao', kwargs={'projeto_id': self.object.projeto.pk})
 
