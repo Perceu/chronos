@@ -278,6 +278,7 @@ class CalendarTarefasView(LoginRequiredMixin, TemplateView):
             eventos.append(
                 {
                     "title": tarefa.titulo,
+                    "description": tarefa.descricao,
                     "start": tarefa.data_entrega.strftime('%Y-%m-%d'),
                     "backgroundColor": color,
                     "borderColor": color,
@@ -295,6 +296,7 @@ class CalendarTarefasView(LoginRequiredMixin, TemplateView):
             eventos.append(
                 {
                     "title": reuniao.nome,
+                    "description": reuniao.descricao,
                     "start": reuniao.inicio.strftime('%Y-%m-%d %H:%M:%S'),
                     "end": reuniao.fim.strftime('%Y-%m-%d %H:%M:%S'),
                     "backgroundColor": color,

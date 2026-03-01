@@ -23,9 +23,9 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th class="text-center">Inicio</th>
-                            <th class="text-center">Fim</th>
-                            <th>Ações</th>
+                            <th>Descrição</th>
+                            <th class="text-center">Inicio/Fim</th>
+                            <th class="text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,14 +34,17 @@
                             <td>
                                 {{ reuniao.nome }}
                             </td>
-                            <td class="text-center">
-                                {{ reuniao.inicio | date:"d/m/Y H:i" }}
-                            </td>
-                            <td class="text-center">
-                                {{ reuniao.fim | date:"d/m/Y H:i" }}
-                            </td>
                             <td>
-                                <a href="{% url 'reuniao-editar' reuniao.pk %}">Editar</a>
+                                {{ reuniao.descricao | safe }}
+                            </td>
+                            <td class="text-center">
+                                <small>{{ reuniao.inicio | date:"d/m/Y H:i" }}</small><br>
+                                <small>{{ reuniao.fim | date:"d/m/Y H:i" }}</small>
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-success" href="{% url 'reuniao-editar' reuniao.pk %}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}

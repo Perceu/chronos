@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
     volumes: 
-        - pgdata:/var/lib/postgresql/data
+        - pg_data:/var/lib/postgresql
 
   django:
     build: 
@@ -25,7 +25,7 @@ services:
       - ./manage.py:/var/www/django/manage.py
 
 volumes:
-  pgdata:
+  pg_data:
 
 networks:
   chronos_net:

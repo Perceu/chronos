@@ -73,7 +73,14 @@ $(document).ready(function () {
         themeSystem: 'bootstrap',
         editable: false,
         droppable: false,
-        events: events_data
+        events: events_data,
+        eventClick: function(info) {
+            Swal.fire({
+                title: info.event.title,
+                html: info.event.extendedProps.description,
+                icon: "info"
+            });
+        }
     })
     calendar.render();
 });
