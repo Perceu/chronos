@@ -43,6 +43,8 @@ MY_APPS = [
     "chronos.template",
     "chronos.core",
     "chronos.reunioes",
+    "chronos.empresas",
+    "chronos.usuarios",
 ]
 
 INSTALLED_APPS = [

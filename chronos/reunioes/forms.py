@@ -13,4 +13,7 @@ class ReuniaoForm(forms.ModelForm):
             'fim': forms.DateTimeInput(attrs={
                 'class': "datetimepicker",
             }),
+            'descricao': forms.Textarea(attrs={
+                'class': "summernote",
+            }),
         }
