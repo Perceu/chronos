@@ -5,9 +5,9 @@ from datetime import timedelta
 from datetime import date
 from chronos.projetos.models import Projeto
 from django.contrib.auth.models import User
+from chronos.empresas.baseModel import EmpresaModel
 
-
-class Tarefa(models.Model):
+class Tarefa(EmpresaModel):
     class StatusTarefa(models.TextChoices):
         ABERTA = "ABE", _("Aberta")
         ANDAMENTO = "AND", _("Andamento")

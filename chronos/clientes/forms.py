@@ -1,8 +1,9 @@
 from django import forms
 from chronos.clientes.models import Cliente
+from chronos.empresas.baseForm import EmpresaModelForm
 
 
-class ClienteForm(forms.ModelForm):
+class ClienteForm(EmpresaModelForm):
     class Meta:
         model = Cliente
         fields = [

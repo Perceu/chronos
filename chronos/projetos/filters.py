@@ -1,8 +1,8 @@
-import django_filters
+from chronos.empresas.baseFilterSet import EmpresaFilterSet
 from chronos.projetos.models import Projeto
 
 
-class ProjetoFilter(django_filters.FilterSet):
+class ProjetoFilter(EmpresaFilterSet):
     class Meta:
         model = Projeto
         fields = ['status','pagamento', 'cliente']

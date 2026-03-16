@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.http import HttpResponse
-
+from chronos.core.context import set_empresa
 
 class ActiveMiddleware:
     def __init__(self, get_response):
@@ -27,3 +27,19 @@ class ActiveMiddleware:
         # the view is called.
 
         return response
+
+class EmpresaMiddleware:
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        empresa = None
+        if request.user.is_authenticated:
+            empresa = request.user.usuario.empresa
+
+        request.empresa = empresa
+        set_empresa(empresa)
+
+        return self.get_response(request)

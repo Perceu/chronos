@@ -17,7 +17,7 @@ from django.views.generic import (
 )
 from chronos.tarefas.models import Tarefa, TarefaTempo, TarefaChecklist
 from chronos.projetos.models import Projeto
-from chronos.tarefas.model_forms import TarefaModelForm, TarefaChecklistForm, TarefaTempoForm
+from chronos.tarefas.forms import TarefaModelForm, TarefaChecklistForm, TarefaTempoForm
 from chronos.tarefas.filters import ProjetoTarefaFilter
 from chronos.reunioes.models import Reuniao
 

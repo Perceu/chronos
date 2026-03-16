@@ -68,7 +68,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "chronos.core.middleware.ActiveMiddleware"
+    "chronos.core.middleware.ActiveMiddleware",
+    "chronos.core.middleware.EmpresaMiddleware",
 ]
 
 ROOT_URLCONF = "chronos.urls"

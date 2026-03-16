@@ -1,10 +1,13 @@
 from django import forms
+from chronos.empresas.baseForm import EmpresaModelForm
 from chronos.reunioes.models import Reuniao
 
-class ReuniaoForm(forms.ModelForm):
+
+class ReuniaoForm(EmpresaModelForm):
     class Meta:
         model = Reuniao
         fields = '__all__'
+        exclude = ['empresa']
 
         widgets = {
             'inicio': forms.DateTimeInput(attrs={

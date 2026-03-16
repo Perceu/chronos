@@ -1,10 +1,11 @@
 import logging
 from django import forms
+from chronos.empresas.baseForm import EmpresaModelForm
 from chronos.tarefas.models import Tarefa, TarefaChecklist, TarefaTempo
 from django.forms.models import inlineformset_factory
 
 
-class TarefaModelForm(forms.ModelForm):
+class TarefaModelForm(EmpresaModelForm):
     class Meta:
         model = Tarefa
         fields = [

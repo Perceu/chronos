@@ -1,9 +1,9 @@
 from django.db import models
 from django.urls import reverse
-
+from chronos.empresas.baseModel import EmpresaModel
 
 # Create your models here.
-class Cliente(models.Model):
+class Cliente(EmpresaModel):
     nome = models.CharField(max_length=250)
     telefone = models.CharField(max_length=20, blank=True, null=True)
     observacoes = models.TextField(blank=True, null=True, default="")

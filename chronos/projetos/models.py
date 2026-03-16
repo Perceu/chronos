@@ -3,9 +3,10 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from chronos.clientes.models import Cliente
+from chronos.empresas.baseModel import EmpresaModel
 
 
-class Projeto(models.Model):
+class Projeto(EmpresaModel):
 
     class Meta:
         ordering = ["pago", "nome"]
