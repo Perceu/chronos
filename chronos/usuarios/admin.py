@@ -1,5 +1,15 @@
 from django.contrib import admin
-from chronos.usuarios.models import Usuario
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
-admin.site.register(Usuario)
+from chronos.usuarios.models import Usuario
+
+class UsuarioInline(admin.StackedInline):
+    model = Usuario
+    can_delete = False
+
+class CustomUserAdmin(UserAdmin):
+    inlines = [UsuarioInline]
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
