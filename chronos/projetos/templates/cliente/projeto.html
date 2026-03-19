@@ -1,14 +1,18 @@
-{% extends 'content.html'%}
+{% extends 'base.html'%}
+{% block 'body-class'%}login-page{% endblock %}
+{% block 'warpper'%}
 
-{% block 'content'%}
-
-<div class="container-fluid">
+<div class="container mt-4">
 
     <!-- HEADER -->
     <div class="row mb-3">
         <div class="col-12">
-            <h3>{{ projeto.nome }}</h3>
-            <p class="text-muted">Acompanhe o andamento do seu projeto</p>
+            <div class="card">
+                <div class="card-body">
+                    <h2>{{ projeto.nome | title }}</h2>
+                    <p class="text-muted">Acompanhe o andamento do seu projeto</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -27,6 +31,41 @@
 
         <!-- COLUNA ESQUERDA -->
         <div class="col-md-8">
+            
+            <!-- FORMULÁRIO -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Enviar sugestão / mensagem</h3>
+                </div>
+                
+                <div class="card-body">
+                    
+                    <form method="post" action="{% url 'projeto-save' projeto.token_publico %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label>Mensagem</label>
+                            <textarea name="mensagem" class="form-control" rows="4"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Enviar arquivo</label>
+                            <input type="file" name="arquivo" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Link de referência (Pinterest, imagens, etc)</label>
+                            <input type="url" name="link_referencia" class="form-control" placeholder="https://...">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            Enviar
+                        </button>
+                        
+                    </form>
+                    
+                </div>
+            </div>
 
             <!-- MENSAGENS -->
             <div class="card">
@@ -53,41 +92,6 @@
                     {% empty %}
                         <p>Nenhuma mensagem ainda.</p>
                     {% endfor %}
-
-                </div>
-            </div>
-
-            <!-- FORMULÁRIO -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Enviar sugestão / mensagem</h3>
-                </div>
-
-                <div class="card-body">
-
-                    <form method="post" action="{% url 'projeto-save' projeto.token_publico %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-
-                        <div class="form-group">
-                            <label>Mensagem</label>
-                            <textarea name="mensagem" class="form-control" rows="4"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Enviar arquivo</label>
-                            <input type="file" name="arquivo" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Link de referência (Pinterest, imagens, etc)</label>
-                            <input type="url" name="link_referencia" class="form-control" placeholder="https://...">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            Enviar
-                        </button>
-
-                    </form>
 
                 </div>
             </div>
