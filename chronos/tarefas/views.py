@@ -66,7 +66,7 @@ def tarefas_start(request, tarefa_id):
     tarefa_tempo = TarefaTempo(
         tarefa=tarefa,
         inicio=datetime.now(),
-        user=request.user
+        usuario=request.user.usuario
     )
     tarefa_tempo.save()
     url = request.GET.get("redirect", "tarefa-projeto-list")

@@ -1,0 +1,38 @@
+{% extends 'content.html'%}
+
+{% block 'content'%}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Tempos em Aberto</h3>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-danger">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Tarefa</th>
+                    <th>Início</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in dados %}
+                <tr>
+                    <td>{{ item.usuario.user.username }}</td>
+                    <td>{{ item.tarefa.titulo }}</td>
+                    <td>{{ item.inicio }}</td>
+                    <td>{{ item.descricao }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum tempo aberto</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

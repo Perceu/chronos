@@ -14,7 +14,7 @@ class TarefaModelForm(EmpresaModelForm):
             "projeto",
             "data_entrega",
             "status",
-            "user",
+            "usuario",
         ]
         widgets = {
             'data_entrega': forms.DateInput(attrs={
@@ -27,4 +27,4 @@ class TarefaModelForm(EmpresaModelForm):
 
 
 TarefaChecklistForm = inlineformset_factory(Tarefa, TarefaChecklist, fields=['concluido', 'descricao'], extra=1)
-TarefaTempoForm = inlineformset_factory(Tarefa, TarefaTempo, fields=['inicio','fim', 'user'], extra=0)
+TarefaTempoForm = inlineformset_factory(Tarefa, TarefaTempo, fields=['inicio','fim', 'usuario'], extra=0)

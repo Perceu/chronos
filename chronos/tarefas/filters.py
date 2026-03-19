@@ -6,4 +6,4 @@ from chronos.tarefas.models import Tarefa
 class ProjetoTarefaFilter(EmpresaFilterSet):
     class Meta:
         model = Tarefa
-        fields = ['projeto','user']
+        fields = ['projeto','usuario', 'status']

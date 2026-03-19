@@ -49,6 +49,8 @@ Lista de Projetos
               <th>Projeto</th>
               <th>Status</th>
               <th>Tarefas</th>
+              <th>Link Publico</th>
+              <th>Senha Publica</th>
               <th class="text-right">Ações</th>
             </tr>
           </thead>
@@ -75,6 +77,14 @@ Lista de Projetos
               </td>
               <td>
                 {{object.tarefas.count}}
+              </td>
+              <td>
+                  <a href="{% url 'projeto-publico' object.token_publico %}" target="_blank" class="btn btn-sm btn-secondary">
+                      <i class="fas fa-link"></i> Link
+                  </a>
+              </td>
+              <td>
+                  {{object.senha_acesso|default:"-"}}
               </td>
               <td class="text-right">
                 <div class="btn-group">

@@ -1,5 +1,6 @@
 from django.urls import path
 from chronos.tarefas import views
+from chronos.tarefas import views_produtividade
 
 
 urlpatterns = [
@@ -17,4 +18,11 @@ urlpatterns = [
     path('calendar', views.CalendarTarefasView.as_view(), name="tarefa-calendar"),
     path('copiar/<int:tarefa_id>', views.CopiaTarefa.as_view(), name="tarefa-copiar"),
     path('copiar/save/<int:tarefa_id>', views.copia_tarefa_post, name="tarefa-copiar-save"),
+
+    path("produtividade/", views_produtividade.dashboard, name="produtividade-dashboard"),
+    path("produtividade/usuarios/", views_produtividade.produtividade_por_usuario, name="produtividade-por-usuario"),
+    path("produtividade/diario/", views_produtividade.produtividade_diaria, name="produtividade-diaria"),
+    path("produtividade/ranking/", views_produtividade.ranking, name="produtividade-ranking"),
+    path("produtividade/tarefas/", views_produtividade.tempo_por_tarefa, name="produtividade-por-tarefa"),
+    path("produtividade/abertos/", views_produtividade.tempos_abertos, name="produtividade-tempos-abertos"),
 ]

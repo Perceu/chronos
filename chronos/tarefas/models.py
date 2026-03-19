@@ -6,6 +6,7 @@ from datetime import date
 from chronos.projetos.models import Projeto
 from django.contrib.auth.models import User
 from chronos.empresas.baseModel import EmpresaModel
+from chronos.usuarios.models import Usuario
 
 class Tarefa(EmpresaModel):
     class StatusTarefa(models.TextChoices):
@@ -25,7 +26,7 @@ class Tarefa(EmpresaModel):
         choices=StatusTarefa,
         default=StatusTarefa.ABERTA,
     )
-    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='tarefas', blank=True, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.RESTRICT, related_name='tarefas', blank=True, null=True)
 
     def __str__(self):
         return self.titulo
@@ -91,7 +92,8 @@ class TarefaTempo(models.Model):
     fim = models.DateTimeField(blank=True, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     descricao = models.CharField(max_length=200, null=True, blank=True, default="")
-    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='tempos', blank=True, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.RESTRICT, related_name='tempos', blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.inicio} - {self.fim}"

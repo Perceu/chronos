@@ -1,0 +1,32 @@
+{% extends 'content.html'%}
+
+{% block 'content'%}
+
+<div class="login-box">
+    <div class="card">
+        <div class="card-body">
+
+            <h4>Acesso ao Projeto</h4>
+            <p>{{ projeto.nome }}</p>
+
+            {% if erro %}
+                <div class="alert alert-danger">{{ erro }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <input type="password" name="senha" class="form-control" placeholder="Senha">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Entrar
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

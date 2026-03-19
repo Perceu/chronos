@@ -70,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "chronos.core.middleware.ActiveMiddleware",
     "chronos.core.middleware.EmpresaMiddleware",
+    "chronos.core.middleware.SuperuserAdminOnlyMiddleware"
 ]
 
 ROOT_URLCONF = "chronos.urls"

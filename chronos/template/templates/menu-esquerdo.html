@@ -9,6 +9,7 @@
                 </p>
             </a>
         </li>
+
         <li class="nav-item">
             <a href="{% url 'projeto-list' %}" class="nav-link">
                 <i class="nav-icon fas fa-folder-open"></i>
@@ -17,6 +18,7 @@
                 </p>
             </a>
         </li>
+
         <li class="nav-item">
             <a href="{% url 'tarefa-kanban' %}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -25,6 +27,7 @@
                 </p>
             </a>
         </li>
+
         <li class="nav-item">
             <a href="{% url 'tarefa-calendar' %}" class="nav-link">
                 <i class="nav-icon fas fa-calendar"></i>
@@ -33,6 +36,7 @@
                 </p>
             </a>
         </li>
+
         <li class="nav-item border-top">
             <a href="{% url 'nova-reuniao' %}" class="nav-link">
                 <i class="nav-icon fas fa-calendar-plus"></i>
@@ -41,5 +45,63 @@
                 </p>
             </a>
         </li>
+
+        <!-- PRODUTIVIDADE -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-line"></i>
+                <p>
+                    Produtividade
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-dashboard' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-por-usuario' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Por Usuário</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-diaria' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Produtividade Diária</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-ranking' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ranking</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-por-tarefa' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Por Tarefa</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'produtividade-tempos-abertos' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tempos em Aberto</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
     </ul>
 </nav>

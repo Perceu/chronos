@@ -1,0 +1,147 @@
+{% extends 'content.html'%}
+
+{% block 'content'%}
+
+<div class="row">
+
+    <!-- TOTAL HORAS -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ total_horas }}</h3>
+                <p>Total de horas</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-clock"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALERTAS -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{ alertas|length }}</h3>
+                <p>Alertas</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <!-- GRÁFICO DIÁRIO -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Produtividade Diária</h3>
+            </div>
+            <div class="card-body">
+                <canvas id="graficoDiario"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- RANKING -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Top Usuários</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for item in por_usuario %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        {{ item.usuario__user__username }}
+                        <span>{{ item.total }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <!-- TAREFAS -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Tarefas mais demoradas</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for item in por_tarefa %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        {{ item.tarefa__titulo }}
+                        <span>{{ item.total }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPOS ABERTOS -->
+    <div class="col-md-6">
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Tempos em Aberto</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for item in tempos_abertos %}
+                    <li class="list-group-item">
+                        {{ item.usuario.user.username }} - {{ item.tarefa.nome }}
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">Nenhum problema</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = [
+        {% for item in diaria %}
+            "{{ item.dia }}",
+        {% endfor %}
+    ];
+
+    const data = [
+        {% for item in diaria %}
+            {{ item.total.total_seconds|default:0 }},
+        {% endfor %}
+    ];
+
+    time_data = [];
+    data.forEach(element => {
+        time_data.push(element/3600); // Convertendo segundos para horas
+    });
+
+    new Chart(document.getElementById('graficoDiario'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Horas',
+                data: time_data,
+                fill: false
+            }]
+        }
+    });
+</script>
+
+{% endblock %}
