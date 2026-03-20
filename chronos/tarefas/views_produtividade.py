@@ -94,7 +94,7 @@ def ranking(request):
 def tempo_por_tarefa(request):
     qs = get_base_queryset(request.empresa)
     dados = (
-        qs.values("tarefa__titulo").annotate(total=Sum("duracao")).order_by("-total")
+        qs.values("tarefa__titulo", "tarefa__projeto__cliente__nome", "tarefa__projeto__nome").annotate(total=Sum("duracao")).order_by("-total")
     )
     return render(request, "produtividade/por_tarefa.html", {"dados": dados})
 
