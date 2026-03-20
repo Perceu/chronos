@@ -45,8 +45,8 @@ Lista de Projetos
               {% if 'projeto.can_view_payment_info' in perms %}
               <th>Pagamento</th>
               {% endif %}
-              <th>Cliente</th>
               <th>Projeto</th>
+              <th>Cliente</th>
               <th>Status</th>
               <th>Tarefas</th>
               <th>Link Publico</th>
@@ -63,13 +63,15 @@ Lista de Projetos
               </td>
               {% endif %}
               <td>
-                <a href="{{object.cliente.get_absolute_url}}">
-                  {{object.cliente}}
+                <a href="{% url 'tarefa-projeto-list' object.pk %}" class="btn btn-outline-primary btn-sm">
+                  <i class="far fa-file"></i>
+                  {{object.nome}}
                 </a>
               </td>
               <td>
-                <a href="{% url 'tarefa-projeto-list' object.pk %}" class="link">
-                  {{object.nome}}
+                <a href="{{object.cliente.get_absolute_url}}" class="btn btn-outline-secondary btn-sm">
+                  <i class="far fa-user"></i>
+                  {{object.cliente}}
                 </a>
               </td>
               <td>
@@ -79,12 +81,14 @@ Lista de Projetos
                 {{object.tarefas.count}}
               </td>
               <td>
-                  <a href="{% url 'projeto-publico' object.token_publico %}" target="_blank" class="btn btn-sm btn-secondary">
+                  <a href="{% url 'projeto-publico' object.token_publico %}" target="_blank" class="btn btn-outline-info btn-sm">
                       <i class="fas fa-link"></i> Link
                   </a>
               </td>
               <td>
-                  {{object.senha_acesso|default:"-"}}
+                  <span class="badge badge-secondary">
+                    {{object.senha_acesso|default:"-"}}
+                  </span>
               </td>
               <td class="text-right">
                 <div class="btn-group">

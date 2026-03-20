@@ -1,27 +1,171 @@
-{% extends 'content.html'%}
-
-{% block 'content-title'%}
-Lista de Projetos
-{% endblock%}
-
+{% extends 'content.html'%} 
+{% block 'content-title'%} 
+Detalhes do Projeto 
+{% endblock %} 
 {% block 'content'%}
-  <div class="row">
+<div class="row">
     <div class="col-lg-12">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"></h3>
-          <div class="card-tools">
-            <div class="btn-group">
-                <a href="{% url 'projeto-list' %}" class="btn btn-info">Listagem</a>
-                <a href="{% url 'projeto-update' object.pk %}" class="btn btn-info">Editar</a>
-                <a href="{% url 'projeto-delete' object.pk %}" class="btn btn-info">Excluir</a>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Informações do Projeto</h3>
+                <div class="card-tools">
+                    <div class="btn-group">
+                        <a
+                            href="{% url 'projeto-list' %}"
+                            class="btn btn-info btn-sm"
+                            >Listagem</a
+                        >
+                        <a
+                            href="{% url 'projeto-update' object.pk %}"
+                            class="btn btn-warning btn-sm"
+                            >Editar</a
+                        >
+                        <a
+                            href="{% url 'projeto-delete' object.pk %}"
+                            class="btn btn-danger btn-sm"
+                            >Excluir</a
+                        >
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Nome:</strong> {{ object.nome }}</p>
+                        <p>
+                            <strong>Cliente:</strong> {{ object.cliente.nome }}
+                        </p>
+                        <p>
+                            <strong>Status:</strong> {{ object.get_status_display }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Valor:</strong> R$ {{ object.valor }}</p>
+                        <p>
+                            <strong>Pago:</strong>
+                            {% if object.pago %}
+                            <span class="badge badge-success">Sim</span>
+                            {% else %}
+                            <span class="badge badge-danger">Não</span>
+                            {% endif %}
+                        </p>
+                        <p>
+                            <strong>Progresso:</strong> {{ object.progresso|default:0 }}%
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            {{object}}
-        </div>
-      </div>
     </div>
-  </div>
-{% endblock %}
+</div>
+
+<div class="row mt-3">
+    <!-- COLUNA ESQUERDA - COMENTÁRIOS -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-comments"></i> Mensagens
+                </h3>
+            </div>
+            <div class="card-body" style="max-height: 500px; overflow-y: auto">
+                {% for comentario in comentarios %}
+                <div
+                    class="mb-3 p-3 {% if comentario.autor_cliente %}border-left border-primary{% else %}border-left border-info bg-light{% endif %}"
+                >
+                    <div class="d-flex justify-content-between">
+                        <strong>
+                            {% if comentario.autor_cliente %}
+                            <span class="text-primary">Cliente</span>
+                            {% else %}
+                            <span class="text-info">Arquiteto</span>
+                            {% endif %}
+                        </strong>
+                        <small class="text-muted"
+                            >{{ comentario.criado_em|date:"d/m/Y H:i" }}</small
+                        >
+                    </div>
+                    <hr class="my-2" />
+                    <p class="mb-0">{{ comentario.mensagem|linebreaks }}</p>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center">Nenhuma mensagem ainda.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- COLUNA DIREITA - ARQUIVOS E LINKS -->
+    <div class="col-md-4">
+        <!-- ARQUIVOS -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-file"></i> Arquivos</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for arquivo in arquivos %}
+                    <li class="list-group-item">
+                        <a href="{{ arquivo.arquivo.url }}" target="_blank">
+                            <i class="fas fa-download"></i> Arquivo
+                        </a>
+                        <br />
+                        <small class="text-muted">
+                            {% if arquivo.enviado_por_cliente %}
+                            <span class="text-primary"
+                                >Enviado pelo cliente</span
+                            >
+                            {% else %}
+                            <span class="text-info"
+                                >Enviado pelo arquiteto</span
+                            >
+                            {% endif %}
+                        </small>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">Nenhum arquivo</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- LINKS DE REFERÊNCIA -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-link"></i> Referências
+                </h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for link in links %}
+                    <li class="list-group-item">
+                        <a href="{{ link.url }}" target="_blank">
+                            {{ link.url|truncatechars:40 }}
+                        </a>
+                        <br />
+                        <small class="text-muted">
+                            {% if link.enviado_por_cliente %}
+                            <span class="text-primary"
+                                >Enviado pelo cliente</span
+                            >
+                            {% else %}
+                            <span class="text-info"
+                                >Enviado pelo arquiteto</span
+                            >
+                            {% endif %}
+                            <br />
+                            {{ link.criado_em|date:"d/m/Y H:i" }}
+                        </small>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">
+                        Nenhuma referência
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

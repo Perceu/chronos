@@ -2,9 +2,6 @@
 
 {% block 'content-title'%}
 Tarefas do Projeto: {{projeto.nome}} 
-<a href="{% url 'projeto-update' projeto.pk %}?redirect=tarefa-projeto-list" class="btn btn-tool">
-    <i class="fas fa-pen"></i>
-</a>
 {% endblock%}
 
 {% block 'content'%}
@@ -24,7 +21,21 @@ Tarefas do Projeto: {{projeto.nome}}
                     <br>
                     <label for="">Total de Horas:</label> {{total_horas | floatformat:2}}
                     <br>
-                    <a href="{% url 'projetos-reuniao' projeto.pk%}">Ver reuniões</a>
+                    <label for="">Senha publica:</label> {{projeto.senha_acesso|default:"-"}}
+                    <br>
+                    <a href="{% url 'projeto-detail' projeto.pk %}" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-file"></i> Referências
+                    </a>
+                    <a href="{% url 'projeto-update' projeto.pk %}" target="_blank" class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-pen"></i> Editar Projeto
+                    </a>
+                    <a href="{% url 'projetos-reuniao' projeto.pk%}" class="btn btn-outline-info btn-sm">
+                        <i class="far fa-calendar"></i>
+                        Ver reuniões
+                    </a>
+                    <a href="{% url 'projeto-publico' projeto.token_publico %}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-link"></i> Link publico
+                    </a>
                 </div>
             </div>
         </div>

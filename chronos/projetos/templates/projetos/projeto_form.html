@@ -1,34 +1,125 @@
-{% extends 'content.html'%}
-{% load crispy_forms_tags %}
-
-{% block 'content-title'%}
-{% if object.pk %}
-Editando Projeto <small>#{{object.pk}}</small>
-{% else %}
-Novo Projeto
-{% endif %}
-{% endblock%}
-
-{% block 'content'%}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="card-header">
-                        <h3 class="card-title">Projeto</h3>
+{% extends 'content.html'%} 
+{% load crispy_forms_tags %} 
+{% block 'content-title' %} 
+{% if object.pk %} Editando Projeto<small>#{{object.pk}}</small>
+{% else %} Novo Projeto 
+{% endif %} 
+{% endblock %} 
+{% block 'content' %}
+<div class="row">
+    <div class="col-lg-12">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Dados do Projeto</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            {% with hidden_fields="mensagem_publica,link_publico,arquivo_publico" %}
+                            {{ form.non_field_errors }}
+                            {% for field in form %}
+                                {% if field.name not in hidden_fields %}
+                                    <div class="mb-3">
+                                        {{ field|as_crispy_field }}
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        {{form|crispy}}
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header bg-info">
+                            <h3 class="card-title text-white">
+                                <i class="fas fa-share-alt mr-1"></i>
+                                Dados Públicos para o Cliente
+                            </h3>
+                            <br>
+                            <p class="text-white-50 small mb-0">
+                                Esses campos permitem enviar informações públicas ao
+                                cliente via portal.
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_mensagem_publica">
+                                            <i class="fas fa-comment mr-1"></i>
+                                            Mensagem Pública
+                                        </label>
+                                        <textarea
+                                            name="mensagem_publica"
+                                            id="id_mensagem_publica"
+                                            class="form-control"
+                                            rows="3"
+                                            placeholder="Digite uma mensagem pública para o cliente..."
+                                        ></textarea>
+                                        <small class="form-text text-muted">
+                                            Esta mensagem será exibida no portal do
+                                            cliente.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="id_link_publico">
+                                            <i class="fas fa-link mr-1"></i>Link Público
+                                        </label>
+                                        <input
+                                            type="url"
+                                            name="link_publico"
+                                            id="id_link_publico"
+                                            class="form-control"
+                                            placeholder="https://..."
+                                        />
+                                        <small class="form-text text-muted">
+                                            Link de referência (Pinterest, imagens, etc)
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="id_arquivo_publico">
+                                            <i class="fas fa-file-upload mr-1"></i>
+                                            Arquivo Público
+                                        </label>
+                                        <input
+                                            type="file"
+                                            name="arquivo_publico"
+                                            id="id_arquivo_publico"
+                                            class="form-control"
+                                            accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.zip,.rar"
+                                        />
+                                        <small class="form-text text-muted">
+                                            Arquivos permitidos: PDF, Word, Excel,
+                                            Imagens, ZIP
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-info">Salvar</a>
-                    </div>
-                </form>
+                    <!-- /.card Campos Públicos -->
+                </div>
             </div>
             <!-- /.card -->
-        </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info">Salvar</button>
+                <a href="{% url 'projeto-list' %}" class="btn btn-default">
+                    Cancelar
+                </a>
+            </div>
+        </form>
     </div>
+</div>
 {% endblock %}
